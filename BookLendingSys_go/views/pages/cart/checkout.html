@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>成功借阅</title>
+<link type="text/css" rel="stylesheet" href="/static/css/style.css" >
+<style type="text/css">
+	h1 {
+		text-align: center;
+		margin-top: 200px;
+	}
+</style>
+</head>
+<body>
+	
+	<div id="header">
+			<img class="logo_img" alt="" src="/static/img/logo.gif" >
+			<span class="wel_word">借阅</span>
+			<div>
+				<span>欢迎借阅用户<span class="um_span">{{.UserName}}</span>
+				<a href="/main">去主页</a>
+			</div>
+	</div>
+	
+	<div id="main">
+		
+		<h1>借阅成功，借阅清单编号为<span style="color:red">{{.OrderID}}</span></h1>
+		
+	
+	</div>
+	
+	<div id="bottom">
+		<span>
+		</span>
+	</div>
+</body>
+</html>

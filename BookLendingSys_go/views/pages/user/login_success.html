@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>会员注册页面</title>
+<link type="text/css" rel="stylesheet" href="/static/css/style.css" >
+<style type="text/css">
+	h1 {
+		text-align: center;
+		margin-top: 200px;
+	}
+	
+	h1 a {
+		color:red;
+	}
+</style>
+</head>
+<body>
+		<div id="header">
+				<img class="logo_img" alt="" src="/static/img/logo.gif" >
+				<div>
+					<span>您好，借阅用户<span class="um_span">{{.Username}}</span>
+					<a href="/getMyOrder">借阅历史</a>
+					<a href="/logout">退出</a>
+				</div>
+		</div>
+		
+		<div id="main">
+		
+			<h1>欢迎回来,借阅用户&nbsp;&nbsp;<span class="um_span">{{.Username}}</span>	<a href="/main">去首页</a>
+			</h1>
+	
+		</div>
+		
+		<div id="bottom">
+			<span>
+			</span>
+		</div>
+</body>
+</html>

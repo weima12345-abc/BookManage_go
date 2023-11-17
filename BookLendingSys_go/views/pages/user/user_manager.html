@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>用户管理</title>
+<link type="text/css" rel="stylesheet" href="/static/css/style.css" >
+</head>
+<body>
+	<div id="header">
+			<img class="logo_img" alt="" src="/static/img/logo.gif" >
+			<span class="wel_word">用户管理系统</span>
+			<div>
+				<a href="/pages/user/regist.html">添加用户</a>
+				<a href= "/pages/manager/manager.html">返回</a>
+			</div>
+	</div>
+	
+	<div id="main">
+		<table>
+			<tr>
+				<th>用户ID</th>
+				<th>用户名</th>
+				<th>密码</th>
+				<th>邮箱</th>
+                <td colspan="2">操作</td>
+			</tr>		
+		{{range .}}
+			<tr>
+				<td>{{.ID}}</td>
+				<td>{{.Username}}</td>
+				<td>{{.Password}}</td>
+				<td>{{.Email}}</td>
+				<td><a href="/toUpdateUser?userId={{.ID}}">修改</a></td>
+				<td><a id="{{.ID}}" class="deleteBook" href="/deleteUser?userId={{.ID}}">删除</a></td>
+			</tr>
+		{{end}}		
+		</table>
+	</div>
+	
+	<div id="bottom">
+		<span>
+		</span>
+	</div>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>编辑用户信息</title>
+<link type="text/css" rel="stylesheet" href="/static/css/style.css" >
+<style type="text/css">
+	h1 {
+		text-align: center;
+		margin-top: 200px;
+	}
+	
+	h1 a {
+		color:red;
+	}
+	
+	input {
+		text-align: center;
+	}
+</style>
+</head>
+<body>
+		<div id="header">
+			<img class="logo_img" alt="" src="/static/img/logo.gif" >
+			<span class="wel_word">编辑用户信息</span>
+			<div>
+			</div>
+		</div>
+		
+		<div id="main">
+			<form action="/updateOraddUser?userId={{.ID}}" method="POST">
+				<table>
+					<tr>
+						<th>用户ID</th>
+						<th>用户名</th>
+						<th>密码</th>
+						<th>邮箱</th>
+						<td colspan="2">操作</td>
+					</tr>		
+					<tr>
+						<td><input disabled="disabled" name="userId" type="number" value="{{.ID}}"/></td>
+						<td><input name="username" type="text" value="{{.Username}}"/></td>
+						<td><input name="passwd" type="text" value="{{.Password}}"/></td>
+						<td><input name="email" type="text" value="{{.Email}}"/></td>
+						<td><input type="submit" value="提交"/></td>
+					</tr>		
+				</table>
+			</form>
+		</div>
+		
+		<div id="bottom">
+		</div>
+</body>
+</html>

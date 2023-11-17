@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>书袋</title>
+<link type="text/css" rel="stylesheet" href="/static/css/style.css" >
+<script src="/static/script/jquery-1.7.2.js"></script>
+<script>
+	$(function(){
+		//给清空购物车的超链接绑定单击事件
+		$("#emptyCart").click(function(){
+			return confirm("您确定要清空书袋吗？");
+		});
+		//给删除购物项的超链接绑定单击事件
+		$(".deleteCartItem").click(function(){
+			//获取图书的名称
+			var title = $(this).attr("id");
+			return confirm("确定要删除【"+title+"】这本书吗？");
+		});
+		//给输入购物项数量的input绑定change事件
+		$(".updateCartItem").change(function(){
+			//获取购物项的id
+			var cartItemId = $(this).attr("id");
+			//获取用户输入的图书的数量
+			var bookCount = $(this).val();
+			//发送请求
+			// location = "/updateCartItem?cartItemId="+cartItemId+"&bookCount="+bookCount;
+			//设置请求的url
+			var url = "/updateCartItem";
+			//设置请求参数
+			var params = {"cartItemId":cartItemId,"bookCount":bookCount};
+			//获取显示购物项中的金额小计的td元素
+			var $tdEle = $(this).parent().next().next();
+			//发送Ajax请求
+			$.post(url,params,function(res){
+				//设置总数量
+				$("#totalCount").text(res.TotalCount);
+				//设置总金额
+				$("#totalAmount").text(res.TotalAmount);
+				//设置金额小计
+				$tdEle.text(res.Amount);
+			},"json");
+		});
+	});
+</script>
+</head>
+<body>
+	
+	<div id="header">
+			<img class="logo_img" alt="" src="/static/img/logo.gif" >
+			<span class="wel_word">书袋</span>
+			{{if .UserID}}
+			<div>
+				<span>欢迎<span class="um_span">{{.UserName}}</span>
+				<a href="/getCartInfo">书袋</a>
+				<a href="/getMyOrder">借阅历史</a>
+				<a href="/main">去首页</a>
+			</div>
+			{{else}}
+			<div>
+				<a href="pages/user/login.html">登录</a> | 
+				<a href="pages/user/regist.html">注册</a> &nbsp;&nbsp;
+				<a href="/pages/manager/manager.html">后台管理</a>
+				<a href="/getOrders">订单管理</a>
+			</div>
+			{{end}}
+	</div>
+	
+	<div id="main">
+		
+		{{if .Cart}}		
+		<div class="cart_info" style="text-align:center;padding-top: 200px;">
+			<span class="cart_span">您的书袋中共有<span class="b_count" id="totalCount">{{.Cart.TotalCount}}</span>本书</span>
+			<span class="cart_span">总价值<span class="b_price" id="totalAmount">{{.Cart.TotalAmount}}</span>元</span>
+			<span class="cart_span"><a href="/checkout">提交借阅请求</a></span>
+		</div>
+		{{else}}
+		<br/><br/><br/><br/><br/><br/><br/><br/><br/>
+		<h1 style="text-align: center">您的书袋空空如也</h1>
+		{{end}}
+	</div>
+	
+	<div id="bottom">
+		<span></span>
+	</div>
+</body>
+</html>

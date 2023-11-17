@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>我的订单</title>
+<link type="text/css" rel="stylesheet" href="/static/css/style.css" >
+<style type="text/css">
+	h1 {
+		text-align: center;
+		margin-top: 200px;
+	}
+</style>
+</head>
+<body>
+	
+	<div id="header">
+			<img class="logo_img" alt="" src="/static/img/logo.gif" >
+			<span class="wel_word">我的订单</span>
+			<div>
+				<span>欢迎用户<span class="um_span">{{.UserName}}</span></span>
+				<a href="/getMyOrder">借阅历史</a>
+				<a href="/main">首页</a>
+			</div>
+	</div>
+	
+	<div id="main">
+		<table>
+			<tr>
+				<th>借阅编号</th>
+				<th>日期</th>
+				<th>数量</th>
+				<th>发货</th>
+			</tr>		
+		{{range .Orders}}
+			<tr>
+				<td>{{.OrderID}}</td>
+				<td>{{.CreateTime}}</td>
+				<td>{{.TotalCount}}</td>
+				<td class="state">
+					{{if .SendComplate}}
+						<a href="/takeOrder?orderId={{.OrderID}}">归还</a>
+					{{end}}
+					{{if .NoSend}}
+						等待借出
+					{{end}}	
+					{{if .Complate}}
+						借阅完成
+					{{end}}			
+				</td>
+			</tr>
+		{{end}}		
+		</table>
+	</div>
+	
+	<div id="bottom">
+		<span>
+		</span>
+	</div>
+</body>
+</html>

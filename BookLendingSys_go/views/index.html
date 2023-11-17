@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>书城首页</title>
+<link type="text/css" rel="stylesheet" href="/static/css/style.css" >
+<link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
+<script src="/static/script/jquery-1.7.2.js"></script>
+<script>
+	$(function(){
+		//给添加购物车的按钮绑定单击事件
+		$(".addBook2Cart").click(function(){
+			//获取要添加的图书的id
+			var bookId = $(this).attr("id");
+			//设置请求的url
+			var url = "/addBook2Cart"
+			//设置请求参数
+			var param = {"bookId":bookId}
+			//发送Ajax请求
+			$.post(url,param,function(res){
+				if(res == "请先登录！"){
+					location = "/pages/user/login.html"
+				}else{
+				//将响应信息设置到span中
+				$("#bookMsg").text(res)
+				}
+			});
+		});
+	});
+</script>
+</head>
+<body>
+	
+	<div id="header">
+			<img class="logo_img" alt="" src="/static/img/logo.gif" >
+			<span class="wel_word">图书借阅室</span>
+			{{if .IsLogin}}
+			<div>
+				<span>欢迎<span class="um_span">{{.Username}}</span>光临书城</span>
+				<a type="button" class="btn btn-primary btn-xs" href="/getCartInfo"><small style="text-align: center;color:whitesmoke;font-size:medium;font-weight:bold">清点书袋</small></a>
+				<a type="button" class="btn btn-primary btn-xs" href="/getMyOrder"><small style="text-align: center;color:whitesmoke;font-size:medium;font-weight:bold">借阅历史</small></a>
+				<a type="button" class="btn btn-primary btn-xs" href="/logout"><small style="text-align: center;color:whitesmoke;font-size:medium;font-weight:bold">注销</small></a>&nbsp;&nbsp;
+			</div>
+			{{else}}
+			<div>
+				<a style="display: none" type="button" class="btn btn-primary btn-xs" href="pages/user/login.html"><span style="color:aliceblue;">登录</span></a> 
+				<a style="display: none" type="button" class="btn btn-primary btn-xs" href="pages/user/regist.html"><span style="color:aliceblue">注册</span></a> &nbsp;&nbsp;
+				<a type="button" class="btn btn-danger btn-xs" href="/pages/manager/manager.html"><span style="color:whitesmoke">后台管理</span></a>
+			</div>
+			{{end}}
+	</div>
+	
+	<div id="main">
+		<div id="book" style="text-align:center;">
+			<div class="book_cond" style="text-align:center;">
+			<form action="/getPageBooksByPrice" method="POST">
+				查询价格区间：<input type="number" class="form-inline" name="min"> 元 至 
+					<input type="number" class="form-inline" name="max"> 元 <button class="btn btn-default btn-xs">查询</button>
+			</form>			
+			</div>
+			<div style="text-align: center">
+				<div>
+					<span style="color: red" id="bookMsg"></span></span>
+				</div>
+			</div>
+
+			{{range .Books}}
+			<div class="b_list">
+				<div class="img_div">
+					<img class="book_img" alt="" src="{{.ImgPath}}" />
+				</div>
+				<div class="book_info">
+					<div class="book_name">
+						<span class="sp1" style="font-weight: bold;font-size:15px">书名:</span>
+					</br>
+						<span class="sp2" style="text-align: center;display:block;font-weight: bold;font-size:20px">{{.Title}}</span>
+					</div>
+					<div class="book_price">
+						<span class="sp1">定价:</span>
+						<span class="sp2">￥{{.Price}}</span>
+					</div>
+					<div class="book_sales">
+						<span class="sp1">页数:</span>
+						<span class="sp2">{{.Sales}}&nbsp;页</span>
+					</div>
+					<div class="book_amount">
+						<span class="sp1">剩余:</span>
+						<span class="sp2">{{.Stock}}&nbsp;本</span>
+					</div>
+					<div class="book_add" style="text-align:center">
+						{{if .Stock}}
+						<button type="button" id="{{.ID}}" class="btn btn-primary btn-sm addBook2Cart">放入书袋</button>
+						{{else}}
+						<span style="color:red">书架上空空如也...</span>
+						{{end}}
+					</div>
+				</div>
+			</div>
+			{{end}}
+			
+		</div>
+		
+		<div id="page_nav">
+				{{if .IsHasPrev}}
+					<a type="button" class="btn btn-default btn-xs" href="/getPageBooksByPrice?min={{.MinPrice}}&max={{.MaxPrice}}">首页</a>
+					<a type="button" class="btn btn-default btn-xs" href="/getPageBooksByPrice?pageNo={{.GetPrevPageNo}}&min={{.MinPrice}}&max={{.MaxPrice}}">上一页</a>
+				{{end}}	
+					当前是第{{.PageNo}}页，共{{.TotalPageNo}}页，共{{.TotalRecord}}条记录
+				{{if .IsHasNext}}	
+					<a type="button" class="btn btn-default btn-xs" href="/getPageBooksByPrice?pageNo={{.GetNextPageNo}}&min={{.MinPrice}}&max={{.MaxPrice}}">下一页</a>
+					<a type="button" class="btn btn-default btn-xs" href="/getPageBooksByPrice?pageNo={{.TotalPageNo}}&min={{.MinPrice}}&max={{.MaxPrice}}">末页</a>&nbsp;&nbsp;&nbsp;&nbsp;
+				{{end}}	
+					 跳转至第&nbsp;<input type="number" class="form-inline" value="{{.PageNo}}" name="pn" id="pn_input"/>&nbsp;页
+					<input type="button" class="btn btn-default btn-xs" type="button" value="确定" id="sub">
+					<script>
+						//给确定按钮绑定单击事件
+						$("#sub").click(function(){
+							//获取输入的页码
+							var pageNo = $("#pn_input").val();
+							location = "/getPageBooksByPrice?pageNo="+pageNo+"&min={{.MinPrice}}&max={{.MaxPrice}}"
+						});
+					</script>
+			</div>
+	
+	</div>
+	
+	<div id="bottom">
+		<span></span>
+	</div>
+	<script src="/static/bootstrap/js/bootstrap.min.js"></script>
+</body>
+</html>
